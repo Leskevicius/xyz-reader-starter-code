@@ -41,4 +41,7 @@
     <style name="Theme.Bacon.Fab">
         <item name="elevation">@dimen/fab_elevation</item>
     </style>
+    <style name="Theme.Bacon.Toolbar.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+
+    </style>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -51,8 +53,9 @@ public class ArticleDetailFragment extends Fragment implements
 
     private ImageView mPhotoView;
     private AppBarLayout mAppBarLayout;
+    private TextView toolbarTitle;
     private boolean mIsCard = false;
-    private boolean backButtonVisible = true;
+    private boolean titleVisible = true;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -112,18 +115,20 @@ public class ArticleDetailFragment extends Fragment implements
 
         mAppBarLayout = (AppBarLayout) mRootView.findViewById(R.id.article_details_app_bar_layout);
 
+        toolbarTitle = (TextView) mRootView.findViewById(R.id.toolbar_title);
+
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 float px = getResources().getDimension(R.dimen.toolbar_size);
-                if (Math.abs(verticalOffset) + px > appBarLayout.getTotalScrollRange() && backButtonVisible) {
+                if (Math.abs(verticalOffset) + px > appBarLayout.getTotalScrollRange() && titleVisible) {
+                    toolbarTitleAppear();
 
-                    getActivityCast().backButtonDisappear();
-                    backButtonVisible = false;
-                } else if (Math.abs(verticalOffset) + px < appBarLayout.getTotalScrollRange() && !backButtonVisible) {
+                    titleVisible = false;
+                } else if (Math.abs(verticalOffset) + px < appBarLayout.getTotalScrollRange() && !titleVisible) {
+                    toolbarTitleDisappear();
 
-                    getActivityCast().backButtonAppear();
-                    backButtonVisible = true;
+                    titleVisible = true;
                 }
             }
         });
@@ -140,6 +145,54 @@ public class ArticleDetailFragment extends Fragment implements
 
         bindViews();
         return mRootView;
+    }
+
+    public void toolbarTitleDisappear() {
+        toolbarTitle.animate().alpha(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                toolbarTitle.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).setDuration(300).start();
+    }
+
+    public void toolbarTitleAppear() {
+        toolbarTitle.animate().alpha(1).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                toolbarTitle.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).setDuration(600).start();
     }
 
     private Date parsePublishedDate() {
@@ -170,6 +223,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
             titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+            toolbarTitle.setText(mCursor.getString(ArticleLoader.Query.TITLE));
 
 
             Date publishedDate = parsePublishedDate();
