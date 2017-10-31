@@ -18,13 +18,14 @@ package com.example.xyzreader.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 /**
  * A simple {@link LinearLayout} subclass that has a maxWidth
  */
-public class MaxWidthLinearLayout extends LinearLayout {
+public class MaxWidthLinearLayout extends CardView {
     private static final int[] ATTRS = {
             android.R.attr.maxWidth
     };
@@ -47,7 +48,7 @@ public class MaxWidthLinearLayout extends LinearLayout {
     }
 
     public MaxWidthLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
 

@@ -20,11 +20,11 @@
     <style name="Theme.Bacon" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
-        <item name="colorAccent">@color/theme_accent</item>
+        <item name="colorAccent">#FF6F00</item>
     </style>
 
     <style name="Theme.Bacon.Detail">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+
     </style>
 
     <style name="ThemeOverlay.Bacon.ActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -40,5 +40,8 @@
 
     <style name="Theme.Bacon.Fab">
         <item name="elevation">@dimen/fab_elevation</item>
+    </style>
+    <style name="Theme.Bacon.Toolbar.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+
     </style>
 </resources>
