@@ -20,6 +20,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -114,6 +115,12 @@ public class ArticleDetailFragment extends Fragment implements
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
         mAppBarLayout = (AppBarLayout) mRootView.findViewById(R.id.article_details_app_bar_layout);
+
+        if (getResources().getInteger(R.integer.is_portrait_mode) == 0) {
+            mRootView.measure(mRootView.getWidth(), mRootView.getHeight());
+            mAppBarLayout.getLayoutParams().height = mRootView.getMeasuredHeight()/2;
+            mAppBarLayout.requestLayout();
+        }
 
         toolbarTitle = (TextView) mRootView.findViewById(R.id.toolbar_title);
 
@@ -216,8 +223,6 @@ public class ArticleDetailFragment extends Fragment implements
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
-//        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
-
         if (mCursor != null) {
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
@@ -245,7 +250,9 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>"));
 
             }
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            Spanned killingIt = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)(\r\n|\n)", "<br /><br />").replaceAll("(\r\n|\n)", " "));
+
+            bodyView.setText(killingIt);
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
